@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"strings"
 
 	"github.com/aws/aws-sdk-go/aws"
 	"github.com/aws/aws-sdk-go/aws/session"
@@ -278,9 +279,9 @@ func loginToStsUsingRole(account *cfg.IDPAccount, role *saml2aws.AWSRole, samlAs
 	svc := sts.New(sess)
 
 	params := &sts.AssumeRoleWithSAMLInput{
-		PrincipalArn:    aws.String(role.PrincipalARN), // Required
-		RoleArn:         aws.String(role.RoleARN),      // Required
-		SAMLAssertion:   aws.String(samlAssertion),     // Required
+		PrincipalArn:    aws.String(strings.Replace(role.PrincipalARN, "APP-DE-", "", 1)), // Required
+		RoleArn:         aws.String(role.RoleARN),                                         // Required
+		SAMLAssertion:   aws.String(samlAssertion),                                        // Required
 		DurationSeconds: aws.Int64(int64(account.SessionDuration)),
 	}
 
